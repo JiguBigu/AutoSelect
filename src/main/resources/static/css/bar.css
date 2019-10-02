@@ -1,0 +1,98 @@
+
+
+
+
+
+
+.perspective {
+  -webkit-perspective: 70vh;
+  perspective: 70vh;
+  text-align: center;
+  -webkit-perspective-origin: 50% 50%;
+  perspective-origin: 50% 50%;
+  position: relative;
+  transition: -webkit-transform 0.3s ease;
+  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, -webkit-transform 0.3s ease;
+}
+.perspective:hover {
+  -webkit-transform: scale(1.04);
+  transform: scale(1.04);
+}
+
+.bar-input {
+  position: absolute;
+  height: 100%;
+  left: 0;
+  right: 0;
+  margin: auto;
+  opacity: 0;
+}
+
+#first-bar .bar-input {
+  width: 55vh;
+}
+
+#second-bar .bar-input {
+  width: 40vh;
+}
+
+#third-bar .bar-input {
+  width: 42vh;
+}
+
+.bar {
+  display: inline-block;
+  position: relative;
+  -webkit-transform: rotateX(55deg);
+  transform: rotateX(55deg);
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+.bar .bar-face {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  -webkit-transform-origin: 50% 100%;
+  transform-origin: 50% 100%;
+}
+.bar .bar-face.front {
+  -webkit-transform: rotateX(-90deg);
+  transform: rotateX(-90deg);
+}
+.bar .bar-face.percentage:before {
+  height: 100%;
+  content: "";
+  display: block;
+  position: absolute;
+  bottom: 0;
+  margin: 0;
+}
+
+#first-bar .bar {
+  width: 55vh;
+  height: 7vh;
+}
+#first-bar .bar .bar-face {
+  background: rgba(255, 255, 255, 0.5);
+}
+#first-bar .bar .bar-face.floor {
+  box-shadow: 0 1.3em 1.2em -0.4em rgba(0, 0, 70, 0.25), 0 -2em 15em 0.5em #4d5075, 0 -0.75em 25em 10em rgba(255, 255, 255, 0.4);
+}
+#first-bar .bar .bar-face.percentage:before {
+  box-shadow: 0 1.6em 7em -0.3em rgba(55, 149, 95, 0.5);
+}
+#first-bar .bar .bar-face.roof {
+  -webkit-transform: translateZ(7vh);
+  transform: translateZ(7vh);
+}
+#first-bar .bar .bar-face.back {
+  -webkit-transform: rotateX(-90deg) translateZ(-7vh);
+  transform: rotateX(-90deg) translateZ(-7vh);
+}
+#first-bar .bar .bar-face.percentage:before {
+  background-color: rgba(46, 149, 58, 0.6);
+}
+

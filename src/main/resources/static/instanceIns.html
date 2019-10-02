@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>使用实例</title>
+    <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"></link>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css"></link>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+    <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="/AutoSelect/index"><img src="assets/logo2.jpg" /></a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto menu-1">
+                <li class="nav-item">
+                    <a class="nav-link " href="functionIns.html">功能介绍</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="instanceIns.html">使用实例</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="inputIns.html">输入格式</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="aboutUs.html">关于我们</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto menu-2">
+                <li class="nav-item">
+                    <a class="nav-link btn-menu-register" href="register.html">免费注册</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn-menu-login" href="/AutoSelect/login">登录</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-3"></div>
+        <div class="col-6">
+            <div><br /><br /><br /><br /><br /><br /><br /><br /></div>
+            <div class="jumbotron" id="callout-navbar-breakpoint">
+                <h2>使用实例</h2>
+                <h3>数据</h3>
+                <p>2 3 1<br />2 2 1 3 2 4 3 1 2 2 1 3 7<br />3 1 2 8 1 3 5 1 1 10</p>
+                <p>第一行：表示2个工件，3台机器，每道工序平均有1台机器可供选择。</p>
+                <p>第二行：第一个2表示第一个工件有2道工序，第二个2表示第一道工序有两个机器可以加工，接着（1,3）、（2,4）分别表示在机器1上的加工时间为3、在机器2上的加工时间为4；以此类推</p>
+                <p>将此数据放入txt或fjs文件汇总</p>
+                <h3>操作</h3>
+                <p>1.进入自动算法选择页面</p>
+                <p>2.点击 <code>选择文件</code>，选择数据文件</p>
+                <p>3.点击 <code>上传</code>,上传数据文件</p>
+                <p>4.待出现 <code>上传成功提示框</code>后，点击 <code>运行算法</code></p>
+                <p>5.等待算法运行结束，下拉浏览器即可查看最佳优化方案</p>
+            </div>
+        </div>
+        <div class="col-3"></div>
+    </div>
+</div>
+</body>
+</html>

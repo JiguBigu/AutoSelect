@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.auto.select.demo.dao.UserDao">
+
+    <select id="queryUserByUsername" resultType="com.auto.select.demo.entity.User">
+		SELECT username, password,
+		permission, create_time, last_edit_time
+		FROM user
+		WHERE
+		username=#{username}
+	</select>
+
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="id"
+            keyColumn="id" parameterType="com.auto.select.demo.entity.User">
+		INSERT INTO
+		user(username,password,permission,
+		create_time,last_edit_time)
+		VALUES
+		(#{username},#{password},#{permission},
+		#{createTime},#{lastEditTime})
+	</insert>
+
+    <update id="updateUser" parameterType="com.auto.select.demo.entity.User">
+        update user
+        <set>
+            <if test="password != null">password=#{password},</if>
+            <if test="permission != null">permission=#{permission},</if>
+            <if test="lastEditTime != null">last_edit_time=#{lastEditTime}</if>
+        </set>
+        where username=#{username}
+    </update>
+
+    <delete id="deleteUser">
+		DELETE FROM
+		user
+		WHERE
+		username =
+		#{username}
+	</delete>
+
+	<select id="queryPasswordByUsername" parameterType="String" resultType="java.lang.String">
+		SELECT password
+		FROM user
+		WHERE username=#{username}
+	</select>
+</mapper>
