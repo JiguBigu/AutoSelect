@@ -25,7 +25,7 @@ public class UserDaoTest {
     @Test
     public void insertUser(){
         User user1 = new User();
-        user1.setUsername("admin");
+        user1.setUsername("admin33");
         user1.setPassword("123456");
         user1.setPermission(1);
         user1.setCreateTime(new Date());
