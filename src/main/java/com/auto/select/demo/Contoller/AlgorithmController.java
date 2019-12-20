@@ -1,6 +1,7 @@
 package com.auto.select.demo.Contoller;
 
 import com.auto.select.demo.service.AlgorithmFacadeService;
+import com.auto.select.demo.service.GAService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ import java.util.Map;
 public class AlgorithmController {
 
     AlgorithmFacadeService algorithmFacadeService = new AlgorithmFacadeService();
+   // @Autowired
+    GAService gaService = new GAService();
 
     private final Logger logger = LoggerFactory.getLogger(AlgorithmController.class);
 
@@ -35,5 +38,13 @@ public class AlgorithmController {
         Map<String, Object> modelMap = algorithmFacadeService.getBestResult();
 
         return modelMap;
+    }
+
+    @RequestMapping(value = "/runGA")
+    @CrossOrigin
+    public Map<String, Object> runGA(@RequestParam("fileName") String fileName){
+        logger.info("运行GA算法的文件名为：" + fileName);
+        gaService.setFilePath(fileName);
+        return gaService.getGAResult();
     }
 }

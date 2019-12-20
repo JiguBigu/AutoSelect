@@ -50,7 +50,7 @@ function runAlgorithm() {
     $.ajax({
         type : "GET",
         async : false,	//同步执行
-        url : 'http://127.0.0.1:8082/AutoSelect/algorithm/runAlgorithm',
+        url : 'http://127.0.0.1:8082/AutoSelect/algorithm/runGA',
         data:{"fileName":fileName},
         dataType : 'json', //返回数据形式为json
         success : function(res2) {
@@ -63,7 +63,9 @@ function runAlgorithm() {
             document.getElementById("fileName").value = "运行算法成功";
             alert("运行算法成功！");
             //显示优化结果
-            var str = "优化效果最佳算法：" + res2.name + "\n最短时间：" + res2.data.time +
+            // var str = "优化效果最佳算法：" + res2.name + "\n最短时间：" + res2.data.time +
+            //     "\n工序号: [" + res2.data.p + "]\n机器号: [" + res2.data.m + "]";
+            var str = res2.configInfo + "\n加工时间：" + res2.data.time +
                 "\n工序号: [" + res2.data.p + "]\n机器号: [" + res2.data.m + "]";
             document.getElementById("result").style.display = "block";
             document.getElementById("result").value = str;

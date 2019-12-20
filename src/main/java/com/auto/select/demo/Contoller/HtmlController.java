@@ -32,4 +32,9 @@ public class HtmlController {
     public String test(){
         return "test";
     }
+
+    @RequestMapping("/chart")
+    public String chart(){
+        return "/chart";
+    }
 }
