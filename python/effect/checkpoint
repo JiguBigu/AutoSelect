@@ -1,0 +1,4 @@
+model_checkpoint_path: "effect-model-20000001"
+all_model_checkpoint_paths: "..\\1000W\\effect-model-10000001"
+all_model_checkpoint_paths: "..\\1500W\\effect-model-15000001"
+all_model_checkpoint_paths: "effect-model-20000001"

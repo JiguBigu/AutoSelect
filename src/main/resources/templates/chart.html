@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/charts.js"></script>
+</head>
+<body>
+<div id="main" style="width:100%;height:400px;"></div>
+<script>
+    // 绘制图表。
+    var opt = {
+        title: {
+            text: '工作流甘特图'
+        },
+        legend: {
+            data: ['计划完成时间', '实际完成时间']
+
+        },
+        xAxis: {
+            position: "top"
+        },
+
+        yAxis: {
+            type: "category",
+            data: ['测试', '开发', '设计', '总进度']
+
+        },
+        tooltip: {
+            trigger: 'axis',
+            formatter: function(params) {
+                var res = params[0].name + "</br>"
+                var date0 = params[0].data;
+                var date1 = params[1].data;
+                var date2 = params[2].data;
+                date0 = 1;
+                date1 = 2;
+                date2 = 3;
+                res += params[0].seriesName + ":" + date0 + "</br>"
+                res += params[1].seriesName + ":" + date1 + "</br>"
+                res += params[2].seriesName + ":" + date2 + "</br>"
+                console.log(params[0]);
+                return res;
+            }
+        },
+        series: [
+
+            {
+                name: '计划开始时间',
+                type: 'bar',
+                stack: '总量',
+                itemStyle: {
+                    normal: {
+                        color: 'rgba(0,0,0,0)'
+                    }
+                },
+                data: [
+                    1,
+                    2,
+                    3,
+                    4,
+
+                ]
+            },
+
+
+            {
+                name: '计划完成时间',
+                type: 'bar',
+                stack: '总量',
+                data: [
+                    1,
+                    2,
+                    3,
+                    4,
+
+
+                ]
+            }, {
+                name: '实际完成时间',
+                type: 'bar',
+                stack: '总量',
+                data: [
+                    1,
+                    2,
+                    3,
+                    4,
+
+                ]
+            }
+        ]
+    };
+    echarts.init(document.getElementById('main')).setOption(opt);
+</script>
+</body>
+</html>
