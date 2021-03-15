@@ -15,7 +15,7 @@ import java.util.Map;
 public class GAService {
     private String filePath = "G:/AutoSelectFiles/";
 
-    public Map<String, Object> getGAResult(){
+    public Map<String, Object> getGAResult(String fileName){
         Map<String,Object> modelMap = new HashMap<>();
         try {
             GA ga = new GA(filePath);

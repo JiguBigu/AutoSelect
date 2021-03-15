@@ -12,61 +12,66 @@ public class Food {
     private int[] M;
     private int WorkpieceNum;
     private int MachineNum;
-    private ArrayList<Pro>Pronum;
+    private ArrayList<Pro> Pronum;
 
-    public Food(){}
-
-    Food(int p, int m, int w, ArrayList<Pro>pronum)
-    {
-        P=new int[p];
-        M=new int[p];
-        MachineNum=m;
-        WorkpieceNum=w;
-        Pronum=pronum;
+    public Food() {
     }
 
-    Food(int w, int ma, int t, int[] p, int[] m, ArrayList<Pro>pronum)
-    {
-        P=p;
-        M=m;
-        Pronum=pronum;
-        WorkpieceNum=w;
-        MachineNum=ma;
-        time=t;
+    Food(int p, int m, int w, ArrayList<Pro> pronum) {
+        P = new int[p];
+        M = new int[p];
+        MachineNum = m;
+        WorkpieceNum = w;
+        Pronum = pronum;
+    }
+
+    Food(int w, int ma, int t, int[] p, int[] m, ArrayList<Pro> pronum) {
+        P = p;
+        M = m;
+        Pronum = pronum;
+        WorkpieceNum = w;
+        MachineNum = ma;
+        time = t;
     }
 
 
-    public void Init(int Time[][])
-    {
-        int ptr=0;//P的下标
-        int[] temptime=new int[MachineNum];
-        int[] Select=new int[WorkpieceNum];
-        for (int g = 0; g < MachineNum; g++)	temptime[g] = 0;
-        for (int g = 0; g < WorkpieceNum; g++)	Select[g] = 0;
-        for (int i = 0; i < P.length; i++)	M[i]=0;
+    public void Init(int Time[][]) {
+        int ptr = 0;//P的下标
+        int[] temptime = new int[MachineNum];
+        int[] Select = new int[WorkpieceNum];
+        for (int g = 0; g < MachineNum; g++) {
+            temptime[g] = 0;
+        }
+        for (int g = 0; g < WorkpieceNum; g++) {
+            Select[g] = 0;
+        }
+        for (int i = 0; i < P.length; i++) {
+            M[i] = 0;
+        }
 
 
-
-
-        for (int o = 0; o < WorkpieceNum; o++)
-        {
+        for (int o = 0; o < WorkpieceNum; o++) {
             int se;//工件序号
+
             do {
-                se = (int)(Math.random()*1000) % WorkpieceNum;
+                se = (int) (Math.random() * 1000) % WorkpieceNum;
             } while (Select[se] == 1);
+
             Select[se] = 1;
-            for (int i = 0; i < Pronum.get(se).num; i++)
-            {
-                int pronum = Pronum.get(se).start + i;//工序号，0开始
-                int[] temp=new int[MachineNum];
-                for (int p = 0; p < MachineNum; p++)	temp[p] = temptime[p];
-                for (int p = 0; p < MachineNum; p++)	temp[p] += Time[pronum][p];
+            for (int i = 0; i < Pronum.get(se).num; i++) {
+                //工序号，0开始
+                int pronum = Pronum.get(se).start + i;
+                int[] temp = new int[MachineNum];
+                for (int p = 0; p < MachineNum; p++) {
+                    temp[p] = temptime[p];
+                }
+                for (int p = 0; p < MachineNum; p++) {
+                    temp[p] += Time[pronum][p];
+                }
                 int minnum = 0;
                 int min = temp[minnum];
-                for (int p = 0; p < MachineNum; p++)
-                {
-                    if (min > temp[p])
-                    {
+                for (int p = 0; p < MachineNum; p++) {
+                    if (min > temp[p]) {
                         min = temp[p];
                         minnum = p;
                     }
@@ -79,66 +84,64 @@ public class Food {
             }
         }
 
-        for (int i = 0; i < WorkpieceNum; i++)
-        {
-            for (int j = Pronum.get(i).start; j < Pronum.get(i).start + Pronum.get(i).num; j++)
-                P[ptr++]=i + 1;
+        for (int i = 0; i < WorkpieceNum; i++) {
+            for (int j = Pronum.get(i).start; j < Pronum.get(i).start + Pronum.get(i).num; j++) {
+                P[ptr++] = i + 1;
+            }
         }
 
-        for (int i = 0; i < P.length / 2; i++)
-        {
+        for (int i = 0; i < P.length / 2; i++) {
             int a, b, t;
-            a = (int)(Math.random()*1000) % P.length;
-            b = (int)(Math.random()*1000) % P.length;
-            //System.out.println(a);
+            a = (int) (Math.random() * 1000) % P.length;
+            b = (int) (Math.random() * 1000) % P.length;
             t = P[a];
             P[a] = P[b];
             P[b] = t;
         }
-        //for(int i=0;i<M.length;i++) System.out.println("M:"+M[i]);
-        //for(int i=0;i<P.length;i++) System.out.println("P:"+P[i]);
+
     }
 
-    public void CalTime(int [][] Time)
-    {
+    public void CalTime(int[][] Time) {
         //工序转码
-        int[] TF=new int[P.length];
+        int[] TF = new int[P.length];
         int index, i;
-        for (int j = 0; j < WorkpieceNum; j++)
-        {
+        for (int j = 0; j < WorkpieceNum; j++) {
             index = 0;
-            for (i = 0; i < P.length; i++)
-            {
-                if (P[i] == j + 1)
-                {
+            for (i = 0; i < P.length; i++) {
+                if (P[i] == j + 1) {
                     TF[i] = Pronum.get(j).start + index;
                     index++;
                 }
             }
         }
 
-        int[] M_endtime=new int[MachineNum];
-        int[] O_start=new int[P.length];
-        int[] O_end=new int[P.length];
-        int[] J_end=new int[WorkpieceNum];
-        for (int g = 0; g < P.length; g++)	O_start[g] = O_end[g] = 0;
-        for (int g = 0; g < MachineNum; g++)	M_endtime[g] = 0;
-        for (int g = 0; g < WorkpieceNum; g++)	J_end[g] = 0;
+        int[] M_endtime = new int[MachineNum];
+        int[] O_start = new int[P.length];
+        int[] O_end = new int[P.length];
+        int[] J_end = new int[WorkpieceNum];
+        for (int g = 0; g < P.length; g++) {
+            O_start[g] = O_end[g] = 0;
+        }
+        for (int g = 0; g < MachineNum; g++) {
+            M_endtime[g] = 0;
+        }
+        for (int g = 0; g < WorkpieceNum; g++) {
+            J_end[g] = 0;
+        }
 
-        //for(i=0;i<P.length;i++) System.out.println("w:"+P[i]);
 
-        for (i = 0; i < P.length; i++)
-        {
-            int tf = TF[i];//当前工序序号
-            int tm = M[tf];//获取机器号
-            int Ttime = Time[tf][tm];//如越界，检查这里
-            int TJ = P[i]-1;//2019.8.02修改，删去-1
-            if (M_endtime[tm] > J_end[TJ])
-            {
+        for (i = 0; i < P.length; i++) {
+            //当前工序序号
+            int tf = TF[i];
+            //获取机器号
+            int tm = M[tf];
+            //如越界，检查这里
+            int Ttime = Time[tf][tm];
+            //2019.8.02修改，删去-1
+            int TJ = P[i] - 1;
+            if (M_endtime[tm] > J_end[TJ]) {
                 O_start[tf] = M_endtime[tm];
-            }
-            else
-            {
+            } else {
                 O_start[tf] = J_end[TJ];
             }
             O_end[tf] = O_start[tf] + Ttime;
@@ -147,25 +150,23 @@ public class Food {
         }
 
         int maxtime = 0;
-        for (i = 0; i < MachineNum; i++)
-        {
-            if (M_endtime[i] > maxtime)	maxtime = M_endtime[i];
+        for (i = 0; i < MachineNum; i++) {
+            if (M_endtime[i] > maxtime) {
+                maxtime = M_endtime[i];
+            }
         }
         time = maxtime;
 
     }
 
-    public void NewIndividual(int [][] Time)
-    {
+    public void NewIndividual(int[][] Time) {
         //机器变异
-        int in=time;
+        int in = time;
 
-        int a = (int)(Math.random()*1000) % P.length;
+        int a = (int) (Math.random() * 1000) % P.length;
         int min = 0, mintime = Time[a][min];
-        for (int j = 1; j < MachineNum; j++)
-        {
-            if (Time[a][j] < mintime)
-            {
+        for (int j = 1; j < MachineNum; j++) {
+            if (Time[a][j] < mintime) {
                 min = j;
                 mintime = Time[a][min];
             }
@@ -173,29 +174,27 @@ public class Food {
         M[a] = min;
 
 
-        a = (int)(Math.random()*1000) % P.length;
+        a = (int) (Math.random() * 1000) % P.length;
         do {
-            M[a]=(int)(Math.random()*1000) % MachineNum;
-        }while (Time[a][M[a]]>1000);
+            M[a] = (int) (Math.random() * 1000) % MachineNum;
+        } while (Time[a][M[a]] > 1000);
 
         //工序变异
 
-        int  b, t, c;
+        int b, t, c;
         int pos1, pos2;
-        b = (int)(Math.random()*1000) % P.length;
-        c = (int)(Math.random()*1000) % P.length;
+        b = (int) (Math.random() * 1000) % P.length;
+        c = (int) (Math.random() * 1000) % P.length;
 
-        if(b>c)
-        {
-            t=b;
-            b=c;
-            c=t;
+        if (b > c) {
+            t = b;
+            b = c;
+            c = t;
         }
-        while (b<c)
-        {
-            t=P[b];
-            P[b]=P[c];
-            P[c]=t;
+        while (b < c) {
+            t = P[b];
+            P[b] = P[c];
+            P[c] = t;
             b++;
             c--;
         }
@@ -204,69 +203,62 @@ public class Food {
         //System.out.println("in:"+in+",  out:"+time);
     }
 
-    public void Swap()
-    {
-        int i,j,t;
-        i=(int)(Math.random()*1000) % P.length;
-        j=(int)(Math.random()*1000) % P.length;
+    public void Swap() {
+        int i, j, t;
+        i = (int) (Math.random() * 1000) % P.length;
+        j = (int) (Math.random() * 1000) % P.length;
 
-        t=P[i];
-        P[i]=P[j];
-        P[j]=t;
+        t = P[i];
+        P[i] = P[j];
+        P[j] = t;
     }
 
-    public void Insert()
-    {
+    public void Insert() {
         //将在位置pos1的值插到位置pos2
-        int pos1,pos2;
-        pos1=(int)(Math.random()*1000) % P.length;
-        pos2=(int)(Math.random()*1000) % P.length;
-        if(pos1<pos2)
-        {
-            int value=P[pos1];
-            for(int i=pos1;i<pos2;i++)  P[i]=P[i+1];
-            P[pos2]=value;
+        int pos1, pos2;
+        pos1 = (int) (Math.random() * 1000) % P.length;
+        pos2 = (int) (Math.random() * 1000) % P.length;
+        if (pos1 < pos2) {
+            int value = P[pos1];
+            for (int i = pos1; i < pos2; i++) P[i] = P[i + 1];
+            P[pos2] = value;
         }
     }
 
-    public void Reserse()
-    {
-        int start,end,t;
-        do{
-            start=(int)(Math.random()*1000) % P.length;
-            end=(int)(Math.random()*1000) % P.length;
-        }while (start>=end);
+    public void Reserse() {
+        int start, end, t;
+        do {
+            start = (int) (Math.random() * 1000) % P.length;
+            end = (int) (Math.random() * 1000) % P.length;
+        } while (start >= end);
 
-        for (int i = 0; i < end-start; i++) {
-            t=P[start+i];
-            P[start+i]=P[end-i];
-            P[end-i]=t;
+        for (int i = 0; i < end - start; i++) {
+            t = P[start + i];
+            P[start + i] = P[end - i];
+            P[end - i] = t;
         }
     }
 
-    public void LocalSearch(int [][]Time)
-    {
-        int i,j,min;
+    public void LocalSearch(int[][] Time) {
+        int i, j, min;
 
-        int min_find=5;
-        int max_find=10;
-        int []p=P.clone();
-        int[]m=M.clone();
+        int min_find = 5;
+        int max_find = 10;
+        int[] p = P.clone();
+        int[] m = M.clone();
         int in;
-        do{
-            in=time;
+        do {
+            in = time;
 
-            P=p.clone();
-            M=m.clone();
+            P = p.clone();
+            M = m.clone();
 
             //最优变异
-            int a = (int)(Math.random()*1000) % P.length;
+            int a = (int) (Math.random() * 1000) % P.length;
             min = 0;
             int mintime = Time[a][min];
-            for (j = 1; j < MachineNum; j++)
-            {
-                if (Time[a][j] < mintime)
-                {
+            for (j = 1; j < MachineNum; j++) {
+                if (Time[a][j] < mintime) {
                     min = j;
                     mintime = Time[a][min];
                 }
@@ -274,10 +266,10 @@ public class Food {
             M[a] = min;
 
             //随机变异
-            a = (int)(Math.random()*1000) % P.length;
+            a = (int) (Math.random() * 1000) % P.length;
             do {
-                M[a]=(int)(Math.random()*1000) % MachineNum;
-            }while (Time[a][M[a]]>1000);
+                M[a] = (int) (Math.random() * 1000) % MachineNum;
+            } while (Time[a][M[a]] > 1000);
 
             //工序变异
             Swap();
@@ -287,22 +279,18 @@ public class Food {
             CalTime(Time);
 
             max_find--;
-            if(time<in)
-            {
+            if (time < in) {
                 min_find--;
-            }
-            else if(time>in)
-            {
-                P=p.clone();
-                M=m.clone();
+            } else if (time > in) {
+                P = p.clone();
+                M = m.clone();
                 setTime(in);
             }
-        }while (min_find>0&&max_find>0);
+        } while (min_find > 0 && max_find > 0);
     }
 
-    public Food clone()
-    {
-        Food food=new Food();
+    public Food clone() {
+        Food food = new Food();
         food.setP(P);
         food.setM(M);
         food.setMachineNum(MachineNum);

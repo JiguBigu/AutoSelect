@@ -1,13 +1,14 @@
 package com.auto.select.demo.algorithm.ABC;
 
 public class ABCThread extends Thread{
-    Food best;
-    String filePath;
+    private Food best;
+    private String filePath;
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
     }
 
+    @Override
     public void run()
     {
         FileRead fileRead=new FileRead();
@@ -15,45 +16,27 @@ public class ABCThread extends Thread{
         ABC abc=new ABC(fileRead.ProcessNum,fileRead.MachineNum,fileRead.WorkpieceNum,fileRead.Pronum,fileRead.Time);
         int change=0,time=0;
         abc.Init();
+
         for(int i=0;i<1000;i++)
         {
             abc.EmployedBees();
             abc.OnlookerBees();
 
-            if(abc.best_time==time) change++;
+            if(abc.getBestTime()==time){
+                change++;
+            }
             else {
-                time=abc.best_time;
+                time=abc.getBestTime();
                 change=0;
             }
 
-            if(change>50)   abc.New();
-            //System.out.println("时间:"+abc.best_time);
+            if(change>50){
+                abc.New();
+            }
         }
-        //System.out.println("时间:"+abc.best_time);
-        best=abc.food[abc.bestnum];
+        Food[] foods = abc.getFood();
+        best = foods[abc.getBestNum()];
     }
-    /*public static void main(String[] args) {
-        FileRead fileRead=new FileRead();
-        fileRead.Read("G:\\Data\\FJSP\\mk01.txt");
-        ABC abc=new ABC(fileRead.ProcessNum,fileRead.MachineNum,fileRead.WorkpieceNum,fileRead.Pronum,fileRead.Time);
-        int change=0,time=0;
-        abc.Init();
-        for(int i=0;i<1000;i++)
-        {
-            abc.EmployedBees();
-            abc.OnlookerBees();
-
-            if(abc.best_time==time) change++;
-            else {
-                time=abc.best_time;
-                change=0;
-            }
-
-            if(change>50)   abc.New();
-            //System.out.println("时间:"+abc.best_time);
-        }
-        System.out.println("时间:"+abc.best_time);
-    }*/
 
     public Food getBest() {
         return best;

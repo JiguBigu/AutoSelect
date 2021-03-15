@@ -8,6 +8,7 @@ import com.auto.select.demo.algorithm.new_ga.util.Pro;
 
 import java.util.ArrayList;
 
+
 public class GA {
     String path;
 

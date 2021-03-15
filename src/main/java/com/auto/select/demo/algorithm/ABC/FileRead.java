@@ -30,7 +30,6 @@ public class FileRead {
     {
 
         int p_num,m_num;
-        String[] data;
         try{
             Pattern pat = Pattern.compile("[0-9]{1,}");
             ArrayList<Integer>arrayList=new ArrayList<Integer>();
@@ -62,11 +61,9 @@ public class FileRead {
                 while (matcher.find()) {
                     String temp = line.substring(matcher.start(),matcher.end());
                     arrayList.add(Integer.valueOf(temp));
-                    //System.out.println(temp);
+
                 }
 
-                //System.out.println(arrayList.size());
-                //System.out.println(arrayList);
 
                 Pro pro=new Pro();
                 pro.start = ProcessNum;
@@ -77,7 +74,7 @@ public class FileRead {
                 for (int j = 0; j < p; j++)
                 {
                     int m=arrayList.get(ptr++);
-                    ArrayList<Mtime>protime=new ArrayList<Mtime>();
+                    ArrayList<Mtime>protime=new ArrayList<>();
                     for (int k = 0; k < m; k++)
                     {
                         Mtime a=new Mtime();
@@ -90,9 +87,11 @@ public class FileRead {
             }
 
             Time=new int[ProcessNum][MachineNum];
-            for(int i=0;i<ProcessNum;i++)
-                for(int j=0;j<MachineNum;j++)
-                    Time[i][j]=Integer.MAX_VALUE/1000;
+            for(int i=0;i<ProcessNum;i++){
+                for(int j=0;j<MachineNum;j++) {
+                    Time[i][j] = Integer.MAX_VALUE / 1000;
+                }
+            }
 
             for (int i = 0; i < ProcessNum; i++)
             {
@@ -102,18 +101,7 @@ public class FileRead {
                 }
             }
 
-            /*for(int i=0;i<Time.length;i++)
-            {
-                for(int j=0;j<Time[i].length;j++)
-                {
-                    System.out.print(Time[i][j]+" ");
-                }
-                System.out.println();
-            }*/
-
-
-        }catch (Exception e)
-        {
+        } catch(Exception e) {
             System.out.println("FileRead类-Read方法:"+e);
         }
 

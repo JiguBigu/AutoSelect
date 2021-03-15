@@ -7,7 +7,6 @@ import com.auto.select.demo.algorithm.PSO.PSOThread;
 import com.auto.select.demo.algorithm.PSO.Panicle;
 import com.auto.select.demo.algorithm.SA.Individual;
 import com.auto.select.demo.algorithm.SA.SAThread;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,9 +64,17 @@ public class AlgorithmFacadeService {
      * @return 最佳算法名称、加工时间、机器号、工序号
      */
     public Map<String, Object> getBestResult() {
-        Map<String, Object> modelMap = new HashMap<>();
+        Map<String, Object> modelMap;
         startThread();
-        while (abcThread.getState() != TERMINATED || psoThread.getState() != TERMINATED || saThread.getState() != TERMINATED || gaThread.getState() != TERMINATED) {
+//        while (abcThread.getState() != TERMINATED || psoThread.getState() != TERMINATED || saThread.getState() != TERMINATED || gaThread.getState() != TERMINATED) {
+//        }
+        try {
+            abcThread.join();
+            psoThread.join();
+            saThread.join();
+            gaThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         modelMap = selectBest();
         return modelMap;
