@@ -2,25 +2,19 @@ package com.auto.select.demo.algorithm.GA;
 
 
 
+import com.auto.select.demo.algorithm.util.AlgorithmResult;
 import com.auto.select.demo.algorithm.util.Pro;
 
 import java.util.ArrayList;
 
-public class Individual {
-    private int time;
-    private int[] P;
-    private int[] M;
-    private int WorkpieceNum;
-    private int MachineNum;
-    private ArrayList<Pro>Pronum;
+public class Individual extends AlgorithmResult {
 
-
-    Individual(int p, int m, int w, ArrayList<Pro>pronum)
+    Individual(int p1, int m1, int w, ArrayList<Pro>pronum)
     {
-        P=new int[p];
-        M=new int[p];
-        MachineNum=m;
-        WorkpieceNum=w;
+        p=new int[p1];
+        m=new int[p1];
+        machineNum=m1;
+        workpieceNum=w;
         Pronum=pronum;
     }
 
@@ -31,57 +25,57 @@ public class Individual {
     public void Init(int Time[][])
     {
         int ptr=0;//P的下标
-        int[] temptime=new int[MachineNum];
-        int[] Select=new int[WorkpieceNum];
-        for (int g = 0; g < MachineNum; g++)	temptime[g] = 0;
-        for (int g = 0; g < WorkpieceNum; g++)	Select[g] = 0;
-        for (int i = 0; i < P.length; i++)	M[i]=0;
+        int[] temptime=new int[machineNum];
+        int[] Select=new int[workpieceNum];
+        for (int g = 0; g < machineNum; g++)	temptime[g] = 0;
+        for (int g = 0; g < workpieceNum; g++)	Select[g] = 0;
+        for (int i = 0; i < p.length; i++)	m[i]=0;
 
-        for (int o = 0; o < WorkpieceNum; o++)
+        for (int o = 0; o < workpieceNum; o++)
         {
             int se;//工件序号
             do {
-                se = (int)(Math.random()*1000) % WorkpieceNum;
+                se = (int)(Math.random()*1000) % workpieceNum;
             } while (Select[se] == 1);
             Select[se] = 1;
             for (int i = 0; i < Pronum.get(se).num; i++)
             {
                 int pronum = Pronum.get(se).start + i;//工序号，0开始
-                int[] temp=new int[MachineNum];
-                for (int p = 0; p < MachineNum; p++)	temp[p] = temptime[p];
-                for (int p = 0; p < MachineNum; p++)	temp[p] += Time[pronum][p];
+                int[] temp=new int[machineNum];
+                for (int p1 = 0; p1 < machineNum; p1++)	temp[p1] = temptime[p1];
+                for (int p1 = 0; p1 < machineNum; p1++)	temp[p1] += Time[pronum][p1];
                 int minnum = 0;
                 int min = temp[minnum];
-                for (int p = 0; p < MachineNum; p++)
+                for (int p1 = 0; p1 < machineNum; p1++)
                 {
-                    if (min > temp[p])
+                    if (min > temp[p1])
                     {
-                        min = temp[p];
-                        minnum = p;
+                        min = temp[p1];
+                        minnum = p1;
                     }
                 }
 
                 temptime[minnum] += Time[pronum][minnum];
 
-                M[pronum] = minnum;
+                m[pronum] = minnum;
 
             }
         }
 
-        for (int i = 0; i < WorkpieceNum; i++)
+        for (int i = 0; i < workpieceNum; i++)
         {
             for (int j = Pronum.get(i).start; j < Pronum.get(i).start + Pronum.get(i).num; j++)
-                P[ptr++]=i + 1;
+                p[ptr++]=i + 1;
         }
 
-        for (int i = 0; i < P.length / 2; i++)
+        for (int i = 0; i < p.length / 2; i++)
         {
             int a, b, t;
-            a = (int)(Math.random()*1000) % P.length;
-            b = (int)(Math.random()*1000) % P.length;
-            t = P[a];
-            P[a] = P[b];
-            P[b] = t;
+            a = (int)(Math.random()*1000) % p.length;
+            b = (int)(Math.random()*1000) % p.length;
+            t = p[a];
+            p[a] = p[b];
+            p[b] = t;
         }
         CalTime(Time);
     }
@@ -89,57 +83,57 @@ public class Individual {
     public void GS(int[][] Time)
     {
         int ptr=0;//P的下标
-        int[] temptime=new int[MachineNum];
-        int[] Select=new int[WorkpieceNum];
-        for (int g = 0; g < MachineNum; g++)	temptime[g] = 0;
-        for (int g = 0; g < WorkpieceNum; g++)	Select[g] = 0;
-        for (int i = 0; i < P.length; i++)	M[i]=0;
+        int[] temptime=new int[machineNum];
+        int[] Select=new int[workpieceNum];
+        for (int g = 0; g < machineNum; g++)	temptime[g] = 0;
+        for (int g = 0; g < workpieceNum; g++)	Select[g] = 0;
+        for (int i = 0; i < p.length; i++)	m[i]=0;
 
-        for (int o = 0; o < WorkpieceNum; o++)
+        for (int o = 0; o < workpieceNum; o++)
         {
             int se;//工件序号
             do {
-                se = (int)(Math.random()*1000) % WorkpieceNum;
+                se = (int)(Math.random()*1000) % workpieceNum;
             } while (Select[se] == 1);
             Select[se] = 1;
             for (int i = 0; i < Pronum.get(se).num; i++)
             {
                 int pronum = Pronum.get(se).start + i;//工序号，0开始
-                int[] temp=new int[MachineNum];
-                for (int p = 0; p < MachineNum; p++)	temp[p] = temptime[p];
-                for (int p = 0; p < MachineNum; p++)	temp[p] += Time[pronum][p];
+                int[] temp=new int[machineNum];
+                for (int p1 = 0; p1 < machineNum; p1++)	temp[p1] = temptime[p1];
+                for (int p1 = 0; p1 < machineNum; p1++)	temp[p1] += Time[pronum][p1];
                 int minnum = 0;
                 int min = temp[minnum];
-                for (int p = 0; p < MachineNum; p++)
+                for (int p1 = 0; p1 < machineNum; p1++)
                 {
-                    if (min > temp[p])
+                    if (min > temp[p1])
                     {
-                        min = temp[p];
-                        minnum = p;
+                        min = temp[p1];
+                        minnum = p1;
                     }
                 }
 
                 temptime[minnum] += Time[pronum][minnum];
 
-                M[pronum] = minnum;
+                m[pronum] = minnum;
 
             }
         }
 
-        for (int i = 0; i < WorkpieceNum; i++)
+        for (int i = 0; i < workpieceNum; i++)
         {
             for (int j = Pronum.get(i).start; j < Pronum.get(i).start + Pronum.get(i).num; j++)
-                P[ptr++]=i + 1;
+                p[ptr++]=i + 1;
         }
 
-        for (int i = 0; i < P.length / 2; i++)
+        for (int i = 0; i < p.length / 2; i++)
         {
             int a, b, t;
-            a = (int)(Math.random()*1000) % P.length;
-            b = (int)(Math.random()*1000) % P.length;
-            t = P[a];
-            P[a] = P[b];
-            P[b] = t;
+            a = (int)(Math.random()*1000) % p.length;
+            b = (int)(Math.random()*1000) % p.length;
+            t = p[a];
+            p[a] = p[b];
+            p[b] = t;
         }
         CalTime(Time);
     }
@@ -147,51 +141,51 @@ public class Individual {
     public void LS(int[][] Time)
     {
         int ptr=0;//P的下标
-        int[] temptime = new int[MachineNum];
-        for (int i = 0; i < P.length; i++)	M[i]=0;
+        int[] temptime = new int[machineNum];
+        for (int i = 0; i < p.length; i++)	m[i]=0;
 
-        for (int o = 0; o < WorkpieceNum; o++)
+        for (int o = 0; o < workpieceNum; o++)
         {
-            for (int g = 0; g < MachineNum; g++)	temptime[g] = 0;
+            for (int g = 0; g < machineNum; g++)	temptime[g] = 0;
             int se=o;//工件序号
             for (int i = 0; i < Pronum.get(se).num; i++)
             {
                 int pronum = Pronum.get(se).start + i;//工序号，0开始
-                int[] temp = new int[MachineNum];
-                for (int p = 0; p < MachineNum; p++)	temp[p] = temptime[p];
-                for (int p = 0; p < MachineNum; p++)	temp[p] += Time[pronum][p];
+                int[] temp = new int[machineNum];
+                for (int p1 = 0; p1 < machineNum; p1++)	temp[p1] = temptime[p1];
+                for (int p1 = 0; p1 < machineNum; p1++)	temp[p1] += Time[pronum][p1];
                 int minnum = 0;
                 int min = temp[minnum];
-                for (int p = 0; p < MachineNum; p++)
+                for (int p1 = 0; p1 < machineNum; p1++)
                 {
-                    if (min > temp[p])
+                    if (min > temp[p1])
                     {
-                        min = temp[p];
-                        minnum = p;
+                        min = temp[p1];
+                        minnum = p1;
                     }
                 }
 
                 temptime[minnum] += Time[pronum][minnum];
 
-                M[pronum] = minnum;
+                m[pronum] = minnum;
 
             }
         }
 
-        for (int i = 0; i < WorkpieceNum; i++)
+        for (int i = 0; i < workpieceNum; i++)
         {
             for (int j = Pronum.get(i).start; j < Pronum.get(i).start + Pronum.get(i).num; j++)
-                P[ptr++]=i + 1;
+                p[ptr++]=i + 1;
         }
 
-        for (int i = 0; i < P.length / 2; i++)
+        for (int i = 0; i < p.length / 2; i++)
         {
             int a, b, t;
-            a = (int)(Math.random()*1000) % P.length;
-            b = (int)(Math.random()*1000) % P.length;
-            t = P[a];
-            P[a] = P[b];
-            P[b] = t;
+            a = (int)(Math.random()*1000) % p.length;
+            b = (int)(Math.random()*1000) % p.length;
+            t = p[a];
+            p[a] = p[b];
+            p[b] = t;
         }
         CalTime(Time);
     }
@@ -199,30 +193,30 @@ public class Individual {
     public void RD(int[][] Time)
     {
         int ptr=0;
-        for (int i = 0; i < WorkpieceNum; i++)
+        for (int i = 0; i < workpieceNum; i++)
         {
             for (int j = Pronum.get(i).start; j < Pronum.get(i).start + Pronum.get(i).num; j++)
-                P[ptr++]=i + 1;
+                p[ptr++]=i + 1;
         }
 
-        for (int i = 0; i < P.length / 2; i++)
+        for (int i = 0; i < p.length / 2; i++)
         {
             int a, b, t;
-            a = (int)(Math.random()*1000) % P.length;
-            b = (int)(Math.random()*1000) % P.length;
-            t = P[a];
-            P[a] = P[b];
-            P[b] = t;
+            a = (int)(Math.random()*1000) % p.length;
+            b = (int)(Math.random()*1000) % p.length;
+            t = p[a];
+            p[a] = p[b];
+            p[b] = t;
         }
 
-        for (int i = 0; i < P.length; i++)	M[i]=0;
-        for (int i = 0; i < P.length; i++)
+        for (int i = 0; i < p.length; i++)	m[i]=0;
+        for (int i = 0; i < p.length; i++)
         {
             int M_Select;
             do {
-                M_Select = (int)(Math.random()*1000) % MachineNum;
+                M_Select = (int)(Math.random()*1000) % machineNum;
             } while (Time[i][M_Select] == Integer.MAX_VALUE/1000);
-            M[i] = M_Select;
+            m[i] = M_Select;
         }
         CalTime(Time);
     }
@@ -230,14 +224,14 @@ public class Individual {
     public void CalTime(int [][] Time)
     {
         //工序转码
-        int[] TF=new int[P.length];
+        int[] TF=new int[p.length];
         int index, i;
-        for (int j = 0; j < WorkpieceNum; j++)
+        for (int j = 0; j < workpieceNum; j++)
         {
             index = 0;
-            for (i = 0; i < P.length; i++)
+            for (i = 0; i < p.length; i++)
             {
-                if (P[i] == j + 1)
+                if (p[i] == j + 1)
                 {
                     TF[i] = Pronum.get(j).start + index;
                     index++;
@@ -245,21 +239,21 @@ public class Individual {
             }
         }
 
-        int[] M_endtime=new int[MachineNum];
-        int[] O_start=new int[P.length];
-        int[] O_end=new int[P.length];
-        int[] J_end=new int[WorkpieceNum];
-        for (int g = 0; g < P.length; g++)	O_start[g] = O_end[g] = 0;
-        for (int g = 0; g < MachineNum; g++)	M_endtime[g] = 0;
-        for (int g = 0; g < WorkpieceNum; g++)	J_end[g] = 0;
+        int[] M_endtime=new int[machineNum];
+        int[] O_start=new int[p.length];
+        int[] O_end=new int[p.length];
+        int[] J_end=new int[workpieceNum];
+        for (int g = 0; g < p.length; g++)	O_start[g] = O_end[g] = 0;
+        for (int g = 0; g < machineNum; g++)	M_endtime[g] = 0;
+        for (int g = 0; g < workpieceNum; g++)	J_end[g] = 0;
 
 
-        for (i = 0; i < P.length; i++)
+        for (i = 0; i < p.length; i++)
         {
             int tf = TF[i];//当前工序序号
-            int tm = M[tf];//获取机器号
+            int tm = m[tf];//获取机器号
             int Ttime = Time[tf][tm];//如越界，检查这里
-            int TJ = P[i]-1;//2019.8.02修改，删去-1
+            int TJ = p[i]-1;//2019.8.02修改，删去-1
             if (M_endtime[tm] > J_end[TJ])
             {
                 O_start[tf] = M_endtime[tm];
@@ -274,7 +268,7 @@ public class Individual {
         }
 
         int maxtime = 0;
-        for (i = 0; i < MachineNum; i++)
+        for (i = 0; i < machineNum; i++)
         {
             if (M_endtime[i] > maxtime)	maxtime = M_endtime[i];
         }
@@ -294,20 +288,20 @@ public class Individual {
 
         int min_find=3;
         int max_find=5;
-        int []p=P.clone();
-        int[]m=M.clone();
+        int []p1=p.clone();
+        int[]m1=m.clone();
         int in;
         do{
             in=time;
 
-            P=p.clone();
-            M=m.clone();
+            p=p1.clone();
+            m=m1.clone();
 
             //最优变异
-            int a = (int)(Math.random()*1000) % P.length;
+            int a = (int)(Math.random()*1000) % p.length;
             min = 0;
             int mintime = Time[a][min];
-            for (j = 1; j < MachineNum; j++)
+            for (j = 1; j < machineNum; j++)
             {
                 if (Time[a][j] < mintime)
                 {
@@ -315,13 +309,13 @@ public class Individual {
                     mintime = Time[a][min];
                 }
             }
-            M[a] = min;
+            m[a] = min;
 
             //随机变异
-            a = (int)(Math.random()*1000) % P.length;
+            a = (int)(Math.random()*1000) % p.length;
             do {
-                M[a]=(int)(Math.random()*1000) % MachineNum;
-            }while (Time[a][M[a]]>1000);
+                m[a]=(int)(Math.random()*1000) % machineNum;
+            }while (Time[a][m[a]]>1000);
 
             //工序变异
             Swap();
@@ -337,8 +331,8 @@ public class Individual {
             }
             else if(time>in)
             {
-                P=p.clone();
-                M=m.clone();
+                p=p1.clone();
+                m=m1.clone();
                 setTime(in);
             }
         }while (min_find>0&&max_find>0);
@@ -348,25 +342,25 @@ public class Individual {
     public void Swap()
     {
         int i,j,t;
-        i=(int)(Math.random()*1000) % P.length;
-        j=(int)(Math.random()*1000) % P.length;
+        i=(int)(Math.random()*1000) % p.length;
+        j=(int)(Math.random()*1000) % p.length;
 
-        t=P[i];
-        P[i]=P[j];
-        P[j]=t;
+        t=p[i];
+        p[i]=p[j];
+        p[j]=t;
     }
 
     public void Insert()
     {
         //将在位置pos1的值插到位置pos2
         int pos1,pos2;
-        pos1=(int)(Math.random()*1000) % P.length;
-        pos2=(int)(Math.random()*1000) % P.length;
+        pos1=(int)(Math.random()*1000) % p.length;
+        pos2=(int)(Math.random()*1000) % p.length;
         if(pos1<pos2)
         {
-            int value=P[pos1];
-            for(int i=pos1;i<pos2;i++)  P[i]=P[i+1];
-            P[pos2]=value;
+            int value=p[pos1];
+            for(int i=pos1;i<pos2;i++)  p[i]=p[i+1];
+            p[pos2]=value;
         }
     }
 
@@ -374,80 +368,29 @@ public class Individual {
     {
         int start,end,t;
         do{
-            start=(int)(Math.random()*1000) % P.length;
-            end=(int)(Math.random()*1000) % P.length;
+            start=(int)(Math.random()*1000) % p.length;
+            end=(int)(Math.random()*1000) % p.length;
         }while (start>=end);
 
         for (int i = 0; i < end-start; i++) {
-            t=P[start+i];
-            P[start+i]=P[end-i];
-            P[end-i]=t;
+            t=p[start+i];
+            p[start+i]=p[end-i];
+            p[end-i]=t;
         }
     }
 
     public Individual clone()
     {
         Individual individual=new Individual();
-        individual.setM(M);
-        individual.setMachineNum(MachineNum);
-        individual.setP(P);
+        individual.setM(m);
+        individual.setMachineNum(machineNum);
+        individual.setP(p);
         individual.setPronum(Pronum);
-        individual.setWorkpieceNum(WorkpieceNum);
+        individual.setWorkpieceNum(workpieceNum);
         individual.setTime(time);
 
         return individual;
     }
 
-
-
-    public int getTime() {
-        return time;
-    }
-
-    public int[] getP() {
-        return P;
-    }
-
-    public int[] getM() {
-        return M;
-    }
-
-    public int getWorkpieceNum() {
-        return WorkpieceNum;
-    }
-
-    public int getMachineNum() {
-        return MachineNum;
-    }
-
-    public ArrayList<Pro> getPronum() {
-        return Pronum;
-    }
-
-    public void setTime(int time) {
-        this.time = time;
-    }
-
-
-
-    public void setP(int[] p) {
-        P = p;
-    }
-
-    public void setM(int[] m) {
-        M = m;
-    }
-
-    public void setWorkpieceNum(int workpieceNum) {
-        WorkpieceNum = workpieceNum;
-    }
-
-    public void setMachineNum(int machineNum) {
-        MachineNum = machineNum;
-    }
-
-    public void setPronum(ArrayList<Pro> pronum) {
-        Pronum = pronum;
-    }
 
 }

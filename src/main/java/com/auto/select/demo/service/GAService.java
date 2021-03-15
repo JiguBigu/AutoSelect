@@ -11,14 +11,14 @@ import java.util.Map;
  * @version 1.0
  * @date 2019/12/13 9:47
  */
-//@Service
+@Service
 public class GAService {
-    private String filePath = "G:/AutoSelectFiles/";
+    private static final String FILE_PATH = "G:/AutoSelectFiles/";
 
     public Map<String, Object> getGAResult(String fileName){
         Map<String,Object> modelMap = new HashMap<>();
         try {
-            GA ga = new GA(filePath);
+            GA ga = new GA(FILE_PATH + fileName);
             ga.Run();
             modelMap.put("configInfo", ga.getConfigStr());
             modelMap.put("data", ga.findBest());
@@ -28,7 +28,4 @@ public class GAService {
         return modelMap;
     }
 
-    public void setFilePath(String fileName){
-        this.filePath = filePath + fileName;
-    }
 }

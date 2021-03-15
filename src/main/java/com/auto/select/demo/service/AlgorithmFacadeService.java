@@ -1,18 +1,23 @@
 package com.auto.select.demo.service;
 
+import com.auto.select.demo.algorithm.ABC.ABCCallable;
 import com.auto.select.demo.algorithm.ABC.ABCThread;
 import com.auto.select.demo.algorithm.ABC.Food;
+import com.auto.select.demo.algorithm.GA.GACallable;
 import com.auto.select.demo.algorithm.GA.GAThread;
+import com.auto.select.demo.algorithm.PSO.PSOCallable;
 import com.auto.select.demo.algorithm.PSO.PSOThread;
 import com.auto.select.demo.algorithm.PSO.Panicle;
 import com.auto.select.demo.algorithm.SA.Individual;
+import com.auto.select.demo.algorithm.SA.SACallable;
 import com.auto.select.demo.algorithm.SA.SAThread;
+import com.auto.select.demo.algorithm.util.AlgorithmResult;
+import com.google.common.collect.Lists;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
-import static java.lang.Thread.State.TERMINATED;
+import java.util.*;
+import java.util.concurrent.*;
 
 /**
  * @author Jigubigu
@@ -21,119 +26,58 @@ import static java.lang.Thread.State.TERMINATED;
  * 外观模式，运行算法并获取最佳优化结果
  */
 
-
+@Service
 public class AlgorithmFacadeService {
-    private String filePath = "G:/AutoSelectFiles/";
-    private ABCThread abcThread;
-    private PSOThread psoThread;
-    private SAThread saThread;
-    private GAThread gaThread;
-    private final String[] algorithmName = {"ABC", "PSO", "SA", "GA"};
 
+    private final static ThreadFactory NAMED_THREAD_FACTORY = new ThreadFactoryBuilder().setNameFormat("algorithm-executor-pool-%d").build();
+    private static ThreadPoolExecutor algorithmThreadPool = new ThreadPoolExecutor(4, 8,
+            60, TimeUnit.SECONDS,
+            new LinkedBlockingQueue<>(20), NAMED_THREAD_FACTORY);
+    public final static String BASE_FILE_PATH = "G:/AutoSelectFiles/";
 
-    public AlgorithmFacadeService() {
-
-        abcThread = new ABCThread();
-        psoThread = new PSOThread();
-        saThread = new SAThread();
-        gaThread = new GAThread();
-    }
-
-    public void setFilePath(String fileName){
-        this.filePath = filePath + fileName;
-        //为各个算法线程设置读取文件路径
-        abcThread.setFilePath(filePath);
-        psoThread.setFilePath(filePath);
-        saThread.setFilePath(filePath);
-        gaThread.setFilePath(filePath);
-    }
-
-    /**
-     * 运行算法
-     */
-    private void startThread() {
-        abcThread.start();
-        psoThread.start();
-        saThread.start();
-        gaThread.start();
-    }
 
     /**
      * 获取最佳答案
      *
      * @return 最佳算法名称、加工时间、机器号、工序号
      */
-    public Map<String, Object> getBestResult() {
-        Map<String, Object> modelMap;
-        startThread();
-//        while (abcThread.getState() != TERMINATED || psoThread.getState() != TERMINATED || saThread.getState() != TERMINATED || gaThread.getState() != TERMINATED) {
-//        }
-        try {
-            abcThread.join();
-            psoThread.join();
-            saThread.join();
-            gaThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        modelMap = selectBest();
+    public Map executeAlgorithm(String fileName) {
+
+        Map<String, Object> modelMap = new HashMap<>();
+        String filePath =BASE_FILE_PATH + fileName;
+        List<Future<AlgorithmResult>> futureList = Lists.newArrayList();
+        List<AlgorithmResult> results = Lists.newArrayList();
+        //运行优化算法
+        futureList.add(algorithmThreadPool.submit(new ABCCallable(filePath)));
+        futureList.add(algorithmThreadPool.submit(new GACallable(filePath)));
+        futureList.add(algorithmThreadPool.submit(new PSOCallable(filePath)));
+        futureList.add(algorithmThreadPool.submit(new SACallable(filePath)));
+        futureList.forEach(future -> {
+            try {
+                results.add(future.get());
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+        });
+
+        AlgorithmResult result = results.stream().distinct().min(Comparator.comparingInt(AlgorithmResult::getTime)).get();
+        modelMap.put("name", getAlgorithmName(result.getClass().getName()));
+        modelMap.put("data", result);
         return modelMap;
     }
 
-
-    /**
-     * 算法运行后，获取所有算法中最佳结果
-     *
-     * @return 成功标志、最佳结果
-     */
-    private Map<String, Object> selectBest() {
-        Map<String, Object> modelMap = new HashMap<>();
-
-        Food abcBest = abcThread.getBest();
-        Panicle psoBest = psoThread.getBest();
-        Individual saBest = saThread.getBest();
-        com.auto.select.demo.algorithm.GA.Individual gaBest = gaThread.getBest();
-
-        //寻找最小时间的下标
-        int index = 0;
-        int minTime = Integer.MAX_VALUE;
-        ArrayList<String> name = new ArrayList<>();
-        ArrayList<Integer> time = new ArrayList<>();
-        time.add(abcBest.getTime());
-        time.add(psoBest.getTime());
-        time.add(saBest.getTime());
-        time.add(gaBest.getTime());
-        for (int i = 0; i < time.size(); i++) {
-            if (time.get(i) < minTime) {
-                index = i;
-                minTime = time.get(i);
-            }
-        }
-        for(int i = 0; i < time.size(); i++){
-            if(time.get(i) == minTime){
-                name.add(algorithmName[i]);
-            }
-        }
-
-
-        //返回最佳值
-        modelMap.put("name", name);
-        if (index == 0) {
-            //ABC算法时间最短
-            modelMap.put("data", abcBest);
-        } else if (index == 1) {
-            //PSO算法时间最短
-            modelMap.put("data", psoBest);
-        } else if (index == 2) {
-            //SA算法时间最短
-            modelMap.put("data", saBest);
-        } else if(index == 3){
-            //GA算法时间最短
-            modelMap.put("data", gaBest);
+    private String getAlgorithmName(String name) {
+        if ("com.auto.select.demo.algorithm.ABC.Food".equals(name)) {
+            return "ABC";
+        } else if ("com.auto.select.demo.algorithm.GA.Individual".equals(name)) {
+            return "GA";
+        } else if ("com.auto.select.demo.algorithm.PSO.Panicle".equals(name)) {
+            return "PSO";
+        } else if ("com.auto.select.demo.algorithm.SA.Individual".equals(name)) {
+            return "SA";
         } else {
-            modelMap.put("name", "发生未知错误");
+            return  "未知算法";
         }
-        return modelMap;
     }
 
 

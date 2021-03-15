@@ -29,22 +29,20 @@ public class AlgorithmController {
 
     private final Logger logger = LoggerFactory.getLogger(AlgorithmController.class);
 
-    @RequestMapping(value = "/runAlgorithm")
+    @RequestMapping(value = "/run/all")
     @CrossOrigin
     public Map<String, Object> runAlgorithm(@RequestParam("fileName") String fileName,HttpSession session){
         AlgorithmFacadeService algorithmFacadeService = new AlgorithmFacadeService();
         logger.info("运行算法的文件名为：" + fileName);
-        algorithmFacadeService.setFilePath(fileName);
-        Map<String, Object> modelMap = algorithmFacadeService.getBestResult();
+        Map<String, Object> modelMap = algorithmFacadeService.executeAlgorithm(fileName);
 
         return modelMap;
     }
 
-    @RequestMapping(value = "/runGA")
+    @RequestMapping(value = "/run/ga")
     @CrossOrigin
     public Map<String, Object> runGA(@RequestParam("fileName") String fileName){
         logger.info("运行GA算法的文件名为：" + fileName);
-        gaService.setFilePath(fileName);
-        return gaService.getGAResult();
+        return gaService.getGAResult(fileName);
     }
 }

@@ -50,7 +50,7 @@ function runAlgorithm() {
     $.ajax({
         type : "GET",
         async : false,	//同步执行
-        url : 'http://127.0.0.1:8082/AutoSelect/algorithm/runGA',
+        url : 'http://127.0.0.1:8082/AutoSelect/algorithm/run/ga',
         data:{"fileName":fileName},
         dataType : 'json', //返回数据形式为json
         success : function(res2) {
