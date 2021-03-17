@@ -1,7 +1,6 @@
-package com.auto.select.demo.Contoller;
+package com.auto.select.demo.contoller;
 
 import com.auto.select.demo.service.FileService;
-import com.auto.select.demo.test.LoginInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

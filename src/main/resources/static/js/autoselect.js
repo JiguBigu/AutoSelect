@@ -40,7 +40,7 @@ function runAlgorithm() {
         alert("请先上传文件再运行算法");
         return;
     }
-    for(var i = 0; i < 40; i++){
+    for(var i = 0; i < 40; i = i + 0.01){
         document.getElementById("bar").style.width = i + "%";
         if(i == 20 || i == 34){
             for(var j = 0; j < 1000; j++){}

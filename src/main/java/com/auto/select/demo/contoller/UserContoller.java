@@ -1,4 +1,4 @@
-package com.auto.select.demo.Contoller;
+package com.auto.select.demo.contoller;
 
 import com.auto.select.demo.entity.User;
 import com.auto.select.demo.service.UserService;

@@ -1,5 +1,6 @@
 package com.auto.select.demo.service;
 
+import com.auto.select.demo.service.impl.AlgorithmFacadeServiceImpl;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,11 +16,11 @@ import static org.junit.Assert.*;
 public class AlgorithmFacadeServiceTest {
 
     @Autowired
-    private AlgorithmFacadeService algorithmFacadeService;
+    private AlgorithmFacadeServiceImpl algorithmFacadeService;
 
     @Test
     public void executeAlgorithm() {
-        Map map = new AlgorithmFacadeService().executeAlgorithm("Mk01.fjs");
+        Map map = new AlgorithmFacadeServiceImpl().executeAlgorithm("Mk01.fjs");
         assertNotNull(map.get("data"));
     }
 }

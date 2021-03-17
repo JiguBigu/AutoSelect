@@ -1,4 +1,4 @@
-package com.auto.select.demo.Contoller;
+package com.auto.select.demo.contoller;
 
 import com.auto.select.demo.service.AlgorithmFacadeService;
 import com.auto.select.demo.service.GAService;
@@ -22,20 +22,19 @@ import java.util.Map;
 @RestController
 @RequestMapping("/algorithm")
 public class AlgorithmController {
+    @Autowired
+    private GAService gaService;
 
-    AlgorithmFacadeService algorithmFacadeService = new AlgorithmFacadeService();
-   // @Autowired
-    GAService gaService = new GAService();
+    @Autowired
+    private AlgorithmFacadeService algorithmFacadeService;
 
     private final Logger logger = LoggerFactory.getLogger(AlgorithmController.class);
 
     @RequestMapping(value = "/run/all")
     @CrossOrigin
     public Map<String, Object> runAlgorithm(@RequestParam("fileName") String fileName,HttpSession session){
-        AlgorithmFacadeService algorithmFacadeService = new AlgorithmFacadeService();
         logger.info("运行算法的文件名为：" + fileName);
         Map<String, Object> modelMap = algorithmFacadeService.executeAlgorithm(fileName);
-
         return modelMap;
     }
 
